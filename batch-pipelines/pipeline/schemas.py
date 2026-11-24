@@ -1,3 +1,5 @@
+from datetime import date
+
 from pydantic import BaseModel, field_validator
 
 
@@ -28,3 +30,13 @@ class PropertyRecord(BaseModel):
             value: Raw field value.
         """
         return None if value == "" else value
+
+
+class PageDetails(BaseModel):
+    bedrooms: int | None = None
+    area_m2: float | None = None
+    land_area: float | None = None
+    occupancy_status: str | None = None
+    raw_address: str | None = None
+    auction_date: date | None = None
+    image_url: str | None = None
