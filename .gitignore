@@ -1,0 +1,10 @@
+.tmp/
+.env
+.DS_Store
+__pycache__/
+.venv/
+.ruff_cache/
+.pytest_cache/
+batch-pipelines/data/
+node_modules/
+.next/

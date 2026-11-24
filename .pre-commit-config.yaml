@@ -1,0 +1,21 @@
+repos:
+  - repo: local
+    hooks:
+      - id: clean-pycache
+        name: Remove __pycache__ directories
+        entry: bash -c "find . \( -name .venv -o -name .git -o -name node_modules \) -prune -o -type d -name '__pycache__' -exec rm -rf {} +"
+        language: system
+        pass_filenames: false
+        always_run: true
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-toml
+      - id: check-json
+      - id: check-added-large-files
+        args: [--maxkb=2048]
+      - id: detect-private-key
