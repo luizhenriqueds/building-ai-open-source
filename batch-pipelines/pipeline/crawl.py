@@ -14,13 +14,16 @@ from crawl4ai import (
 from sqlalchemy import select
 
 from pipeline.config import (
+    CAIXA_REQUEST_HEADERS,
+    REQUEST_TIMEOUT_SECONDS,
+)
+from pipeline.crawl_config import (
     ADDRESS_PATTERN,
     ANY_PHOTO_PATTERN,
     AUCTION_DATE_PATTERN,
     BEDROOMS_PATTERN,
     BLOCKED_PATTERN,
     CAIXA_BASE_URL,
-    CAIXA_REQUEST_HEADERS,
     CRAWL_DELAY_RANGE_SECONDS,
     CRAWL_MAX_RETRIES,
     CRAWL_MAX_SESSIONS,
@@ -33,7 +36,6 @@ from pipeline.config import (
     OCCUPANCY_PATTERN,
     PREVIEW_PHOTO_PATTERN,
     PRIVATE_AREA_PATTERN,
-    REQUEST_TIMEOUT_SECONDS,
     TOTAL_AREA_PATTERN,
 )
 from pipeline.db import get_session
