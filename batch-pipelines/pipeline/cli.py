@@ -2,6 +2,7 @@ import logging
 
 import typer
 
+from pipeline import crawl as crawl_stage
 from pipeline import load as load_stage
 from pipeline import sample as sample_stage
 
@@ -24,3 +25,11 @@ def sample() -> None:
 def load() -> None:
     """Upsert sample/properties.csv into the properties table."""
     load_stage.run()
+
+
+@app.command()
+def crawl(
+    limit: int | None = typer.Option(None, help="Crawl at most this many properties."),
+) -> None:
+    """Crawl each property's CAIXA page and photo."""
+    crawl_stage.run(limit)

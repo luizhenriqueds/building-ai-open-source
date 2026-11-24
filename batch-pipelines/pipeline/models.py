@@ -1,4 +1,6 @@
-from sqlalchemy import Integer, Numeric, Text
+from datetime import date
+
+from sqlalchemy import Date, Integer, Numeric, Text
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 
@@ -25,3 +27,6 @@ class Property(Base):
     land_area: Mapped[float | None] = mapped_column(Numeric(asdecimal=False))
     bedrooms: Mapped[int | None] = mapped_column(Integer)
     parking_spots: Mapped[int | None] = mapped_column(Integer)
+    occupancy_status: Mapped[str | None] = mapped_column(Text)
+    auction_date: Mapped[date | None] = mapped_column(Date)
+    image_file: Mapped[str | None] = mapped_column(Text)
