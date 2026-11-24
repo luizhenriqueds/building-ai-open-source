@@ -20,11 +20,11 @@ from pipeline.config import (
     LOCAL_FILE_PATTERN,
     REQUEST_TIMEOUT_SECONDS,
     ROOT_DIR,
-    SAMPLE_COLUMNS,
     SAMPLE_PATH,
     SAMPLE_SEED,
     SAMPLE_SIZE,
 )
+from pipeline.schemas import PropertyRecord
 
 logger = logging.getLogger(__name__)
 
@@ -74,7 +74,7 @@ def extract_count(label: str, description: str) -> int | None:
     return int(match.group(1)) if match else None
 
 
-def to_property(cells: list[str]) -> dict:
+def to_property(cells: list[str]) -> PropertyRecord:
     """Convert one CSV row into a property record.
 
     Args:
@@ -87,33 +87,35 @@ def to_property(cells: list[str]) -> dict:
     built_area = extract_area("área privativa", description) or extract_area(
         "área total", description
     )
-    return {
-        "property_id": property_id,
-        "property_type": description.split(",")[0].strip(),
-        "uf": uf,
-        "city": city,
-        "neighborhood": neighborhood,
-        "raw_address": raw_address,
-        "appraised_value": parse_money(appraised_value),
-        "sale_value": parse_money(sale_value),
-        "discount": float(discount) if discount else None,
-        "modality": modality,
-        "link": link,
-        "description": description,
-        "area_m2": built_area,
-        "land_area": extract_area("área do terreno", description),
-        "bedrooms": extract_count(r"qto\(s\)", description),
-        "parking_spots": extract_count(r"vaga\(s\)", description),
-    }
+    return PropertyRecord(
+        **{
+            "property_id": property_id,
+            "property_type": description.split(",")[0].strip(),
+            "uf": uf,
+            "city": city,
+            "neighborhood": neighborhood,
+            "raw_address": raw_address,
+            "appraised_value": parse_money(appraised_value),
+            "sale_value": parse_money(sale_value),
+            "discount": float(discount) if discount else None,
+            "modality": modality,
+            "link": link,
+            "description": description,
+            "area_m2": built_area,
+            "land_area": extract_area("área do terreno", description),
+            "bedrooms": extract_count(r"qto\(s\)", description),
+            "parking_spots": extract_count(r"vaga\(s\)", description),
+        }
+    )
 
 
-def is_eligible(prop: dict) -> bool:
+def is_eligible(prop: PropertyRecord) -> bool:
     """Tell whether a property has a link, an address and is not land.
 
     Args:
         prop: Property record.
     """
-    return bool(prop["link"] and prop["raw_address"] and prop["property_type"] not in LAND_TYPES)
+    return bool(prop.link and prop.raw_address and prop.property_type not in LAND_TYPES)
 
 
 def find_header_index(rows: list[list[str]]) -> int:
@@ -128,7 +130,7 @@ def find_header_index(rows: list[list[str]]) -> int:
     raise ValueError("header row not found (probably the CAIXA block page)")
 
 
-def parse_listing(text: str) -> list[dict]:
+def parse_listing(text: str) -> list[PropertyRecord]:
     """Parse the CAIXA CSV text into eligible property records.
 
     Args:
@@ -144,7 +146,7 @@ def parse_listing(text: str) -> list[dict]:
     return [prop for prop in properties if is_eligible(prop)]
 
 
-def download_properties() -> list[dict]:
+def download_properties() -> list[PropertyRecord]:
     """Download a fresh CAIXA list, keep a copy in the data folder and parse it."""
     response = requests.get(
         CAIXA_CSV_URL, headers=CAIXA_REQUEST_HEADERS, timeout=REQUEST_TIMEOUT_SECONDS
@@ -156,7 +158,7 @@ def download_properties() -> list[dict]:
     return properties
 
 
-def read_local_properties() -> list[dict]:
+def read_local_properties() -> list[PropertyRecord]:
     """Parse the most recently modified CAIXA list in the data folder."""
     local_files = list(DATA_DIR.glob(LOCAL_FILE_PATTERN))
     if not local_files:
@@ -167,7 +169,7 @@ def read_local_properties() -> list[dict]:
     return parse_listing(decode(latest_file.read_bytes()))
 
 
-def load_properties() -> list[dict]:
+def load_properties() -> list[PropertyRecord]:
     """Download the CAIXA list, falling back to the latest local file if blocked."""
     try:
         return download_properties()
@@ -176,15 +178,15 @@ def load_properties() -> list[dict]:
         return read_local_properties()
 
 
-def group_by_stratum(properties: list[dict]) -> dict[Stratum, list[dict]]:
+def group_by_stratum(properties: list[PropertyRecord]) -> dict[Stratum, list[PropertyRecord]]:
     """Group properties by (type, UF), ordered by property id for reproducibility.
 
     Args:
         properties: Eligible property records.
     """
     strata = defaultdict(list)
-    for prop in sorted(properties, key=lambda prop: prop["property_id"]):
-        strata[(prop["property_type"], prop["uf"])].append(prop)
+    for prop in sorted(properties, key=lambda prop: prop.property_id):
+        strata[(prop.property_type, prop.uf)].append(prop)
     return strata
 
 
@@ -207,7 +209,9 @@ def allocate(stratum_sizes: dict[Stratum, int], sample_size: int) -> dict[Stratu
     return allocation
 
 
-def draw_sample(strata: dict[Stratum, list[dict]], allocation: dict[Stratum, int]) -> list[dict]:
+def draw_sample(
+    strata: dict[Stratum, list[PropertyRecord]], allocation: dict[Stratum, int]
+) -> list[PropertyRecord]:
     """Randomly draw the allocated number of properties from each stratum.
 
     Args:
@@ -220,10 +224,12 @@ def draw_sample(strata: dict[Stratum, list[dict]], allocation: dict[Stratum, int
         for stratum in sorted(strata)
         for prop in random_generator.sample(strata[stratum], allocation[stratum])
     ]
-    return sorted(sample, key=lambda prop: prop["property_id"])
+    return sorted(sample, key=lambda prop: prop.property_id)
 
 
-def log_allocation(strata: dict[Stratum, list[dict]], allocation: dict[Stratum, int]) -> None:
+def log_allocation(
+    strata: dict[Stratum, list[PropertyRecord]], allocation: dict[Stratum, int]
+) -> None:
     """Log the allocation table for the strata that were sampled.
 
     Args:
@@ -239,7 +245,7 @@ def log_allocation(strata: dict[Stratum, list[dict]], allocation: dict[Stratum, 
     logger.info("%-20s%9d%9d", "total", eligible_total, sum(allocation.values()))
 
 
-def write_sample(sample: list[dict]) -> None:
+def write_sample(sample: list[PropertyRecord]) -> None:
     """Write the sample to the committed CSV, overwriting any previous one.
 
     Args:
@@ -247,9 +253,9 @@ def write_sample(sample: list[dict]) -> None:
     """
     SAMPLE_PATH.parent.mkdir(exist_ok=True)
     with SAMPLE_PATH.open("w", newline="", encoding="utf-8") as sample_file:
-        writer = csv.DictWriter(sample_file, fieldnames=SAMPLE_COLUMNS)
+        writer = csv.DictWriter(sample_file, fieldnames=list(PropertyRecord.model_fields))
         writer.writeheader()
-        writer.writerows(sample)
+        writer.writerows(prop.model_dump() for prop in sample)
     logger.info("Saved %s", SAMPLE_PATH.relative_to(ROOT_DIR))
 
 

@@ -1,4 +1,9 @@
+import os
 from pathlib import Path
+
+DATABASE_URL = os.environ.get(
+    "DATABASE_URL", "postgresql+psycopg://postgres:postgres@127.0.0.1:55322/postgres"
+)
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
 DATA_DIR = ROOT_DIR / "data"
@@ -23,22 +28,3 @@ CSV_MIN_COLUMNS = 12
 LAND_TYPES = {"Terreno", "Gleba", "Gleba Urbana"}
 SAMPLE_SIZE = 100
 SAMPLE_SEED = 42
-
-SAMPLE_COLUMNS = [
-    "property_id",
-    "property_type",
-    "uf",
-    "city",
-    "neighborhood",
-    "raw_address",
-    "appraised_value",
-    "sale_value",
-    "discount",
-    "modality",
-    "link",
-    "description",
-    "area_m2",
-    "land_area",
-    "bedrooms",
-    "parking_spots",
-]
