@@ -1,7 +1,5 @@
 # Agent instructions
 
-Spec: `.tmp/semantic-lens-lite-spec.md` (local only, never committed).
-
 ## Workflow
 - Work in small, self-contained PRs. The user commits and opens PRs.
 - Always create a new branch before making changes for a step. Never work on `main`.
@@ -15,6 +13,5 @@ Spec: `.tmp/semantic-lens-lite-spec.md` (local only, never committed).
 - Keep README and docs as concise as possible.
 
 ## Repo
-- Never commit anything inside `.tmp/`.
 - The 100-property stratified sample is committed for reproducibility. Running the pipeline again overwrites it.
 - Pipeline execution stays as simple as possible: `uv run pipeline run-all`.
