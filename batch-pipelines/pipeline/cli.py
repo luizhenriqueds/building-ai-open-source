@@ -1,3 +1,5 @@
+import logging
+
 import typer
 
 from pipeline import sample as sample_stage
@@ -8,6 +10,7 @@ app = typer.Typer(no_args_is_help=True)
 @app.callback()
 def main() -> None:
     """Semantic Lens Lite pipeline."""
+    logging.basicConfig(level=logging.INFO, format="%(message)s")
 
 
 @app.command()
