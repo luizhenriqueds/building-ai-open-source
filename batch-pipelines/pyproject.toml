@@ -14,6 +14,7 @@ dependencies = [
     "numpy",
     "fastapi",
     "uvicorn",
+    "sqlalchemy>=2.1.9",
 ]
 
 [project.scripts]

@@ -1,37 +1,24 @@
 import csv
 import logging
 
-from pipeline.config import SAMPLE_COLUMNS, SAMPLE_PATH
-from pipeline.db import connect
+from pipeline.config import SAMPLE_PATH
+from pipeline.db import get_session
+from pipeline.models import Property
+from pipeline.schemas import PropertyRecord
 
 logger = logging.getLogger(__name__)
 
 
-def build_upsert_sql() -> str:
-    """Build the INSERT ... ON CONFLICT statement for the properties table."""
-    columns = ", ".join(SAMPLE_COLUMNS)
-    placeholders = ", ".join(f"%({column})s" for column in SAMPLE_COLUMNS)
-    updates = ", ".join(
-        f"{column} = excluded.{column}" for column in SAMPLE_COLUMNS if column != "property_id"
-    )
-    return (
-        f"insert into properties ({columns}) values ({placeholders}) "
-        f"on conflict (property_id) do update set {updates}"
-    )
-
-
-def read_sample() -> list[dict]:
-    """Read the committed sample CSV, turning empty cells into None."""
+def read_sample() -> list[PropertyRecord]:
+    """Read and validate the committed sample CSV."""
     with SAMPLE_PATH.open(newline="", encoding="utf-8") as sample_file:
-        return [
-            {column: value or None for column, value in row.items()}
-            for row in csv.DictReader(sample_file)
-        ]
+        return [PropertyRecord(**row) for row in csv.DictReader(sample_file)]
 
 
 def run() -> None:
     """Upsert the sample properties into Postgres."""
-    properties = read_sample()
-    with connect() as connection:
-        connection.cursor().executemany(build_upsert_sql(), properties)
-    logger.info("Loaded %d properties", len(properties))
+    records = read_sample()
+    with get_session() as session, session.begin():
+        for record in records:
+            session.merge(Property(**record.model_dump()))
+    logger.info("Loaded %d properties", len(records))

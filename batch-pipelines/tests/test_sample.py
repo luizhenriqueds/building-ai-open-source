@@ -2,6 +2,7 @@ import pytest
 
 from pipeline.config import SAMPLE_SIZE
 from pipeline.sample import allocate, draw_sample, group_by_stratum, parse_listing, to_property
+from pipeline.schemas import PropertyRecord
 
 HOUSE_DESCRIPTION = (
     "Casa, 111.70 de área total, 100.00 de área privativa, 300.00 de área do terreno,  "
@@ -17,7 +18,7 @@ def make_cells(property_id: str, description: str = HOUSE_DESCRIPTION, uf: str =
     ]  # fmt: skip
 
 
-def draw(properties: list[dict]) -> list[dict]:
+def draw(properties: list[PropertyRecord]) -> list[PropertyRecord]:
     strata = group_by_stratum(properties)
     allocation = allocate({stratum: len(rows) for stratum, rows in strata.items()}, SAMPLE_SIZE)
     return draw_sample(strata, allocation)
@@ -25,17 +26,17 @@ def draw(properties: list[dict]) -> list[dict]:
 
 def test_to_property_parses_pt_br_values():
     prop = to_property(make_cells("1"))
-    assert prop["property_type"] == "Casa"
-    assert prop["sale_value"] == 136584.86
-    assert prop["discount"] == 37.06
-    assert (prop["area_m2"], prop["land_area"]) == (100.0, 300.0)
-    assert (prop["bedrooms"], prop["parking_spots"]) == (3, 2)
+    assert prop.property_type == "Casa"
+    assert prop.sale_value == 136584.86
+    assert prop.discount == 37.06
+    assert (prop.area_m2, prop.land_area) == (100.0, 300.0)
+    assert (prop.bedrooms, prop.parking_spots) == (3, 2)
 
 
 def test_parse_listing_skips_land():
     rows = [make_cells("1"), make_cells("2", LAND_DESCRIPTION)]
     text = "preamble\nN° do imóvel;UF\n" + "\n".join(";".join(row) for row in rows)
-    assert [prop["property_id"] for prop in parse_listing(text)] == ["1"]
+    assert [prop.property_id for prop in parse_listing(text)] == ["1"]
 
 
 def test_parse_listing_fails_without_header():
