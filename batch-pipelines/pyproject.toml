@@ -16,6 +16,9 @@ dependencies = [
     "uvicorn",
 ]
 
+[project.scripts]
+pipeline = "pipeline.cli:app"
+
 [dependency-groups]
 dev = ["ruff", "pytest"]
 

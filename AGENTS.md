@@ -9,8 +9,13 @@
 ## Code
 - Minimal changes and as few files as possible. Pick the simplest solution.
 - Follow clean code and best practices for Python, Next.js and React. This is a PoC, so do not overengineer.
-- Comments in English, only when the "why" is not obvious.
+- Comments in English, only when the "why" is not obvious. No header comments at the top of Python files.
 - Keep README and docs as concise as possible.
+- Python: keep constants in `pipeline/config.py`, not scattered across modules.
+- Python: use the `logging` module (`logger = logging.getLogger(__name__)`), never `print`.
+- Use meaningful, descriptive names. No short or meaningless names (`a1`, `rng`, `p`, `k`).
+- Keep functions short and flat. Split long functions and avoid nested levels.
+- Every function gets a docstring: one summary line plus a brief `Args:` section.
 
 ## Repo
 - The 100-property stratified sample is committed for reproducibility. Running the pipeline again overwrites it.
