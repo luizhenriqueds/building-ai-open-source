@@ -1,7 +1,10 @@
+import { Suspense } from "react";
+import { SearchView } from "@/components/search/search-view";
+
 export default function Home() {
   return (
-    <main className="p-8">
-      <h1 className="text-2xl font-semibold">Semantic Lens Lite</h1>
-    </main>
+    <Suspense fallback={null}>
+      <SearchView />
+    </Suspense>
   );
 }
