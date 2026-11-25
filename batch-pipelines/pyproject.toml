@@ -21,7 +21,11 @@ dependencies = [
 pipeline = "pipeline.cli:app"
 
 [dependency-groups]
-dev = ["ruff", "pytest"]
+dev = [
+    "ruff",
+    "pytest",
+    "httpx>=0.28.1",
+]
 
 [build-system]
 requires = ["hatchling"]
