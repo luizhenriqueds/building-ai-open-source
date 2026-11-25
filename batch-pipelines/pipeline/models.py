@@ -1,6 +1,6 @@
 from datetime import date
 
-from sqlalchemy import Date, Integer, Numeric, Text
+from sqlalchemy import Date, Float, Integer, Numeric, Text
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 
@@ -30,3 +30,7 @@ class Property(Base):
     occupancy_status: Mapped[str | None] = mapped_column(Text)
     auction_date: Mapped[date | None] = mapped_column(Date)
     image_file: Mapped[str | None] = mapped_column(Text)
+    lat: Mapped[float | None] = mapped_column(Float)
+    lon: Mapped[float | None] = mapped_column(Float)
+    geocode_precision: Mapped[str | None] = mapped_column(Text)
+    geocode_confidence: Mapped[float | None] = mapped_column(Float)

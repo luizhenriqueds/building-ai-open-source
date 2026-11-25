@@ -40,3 +40,15 @@ class PageDetails(BaseModel):
     raw_address: str | None = None
     auction_date: date | None = None
     image_url: str | None = None
+
+
+class AddressParts(BaseModel):
+    street: str | None = None
+    number: str | None = None
+
+
+class GeocodeResult(BaseModel):
+    lat: float
+    lon: float
+    precision: str
+    confidence: float

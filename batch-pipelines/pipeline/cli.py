@@ -3,6 +3,7 @@ import logging
 import typer
 
 from pipeline import crawl as crawl_stage
+from pipeline import geocode as geocode_stage
 from pipeline import load as load_stage
 from pipeline import sample as sample_stage
 
@@ -33,3 +34,9 @@ def crawl(
 ) -> None:
     """Crawl each property's CAIXA page and photo."""
     crawl_stage.run(limit)
+
+
+@app.command()
+def geocode() -> None:
+    """Geocode properties with Nominatim (street, then neighborhood, then city)."""
+    geocode_stage.run()
