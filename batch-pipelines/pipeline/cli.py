@@ -3,6 +3,7 @@ import logging
 import typer
 
 from pipeline import crawl as crawl_stage
+from pipeline import embed as embed_stage
 from pipeline import geocode as geocode_stage
 from pipeline import load as load_stage
 from pipeline import pois as pois_stage
@@ -47,3 +48,9 @@ def geocode() -> None:
 def pois() -> None:
     """Fetch nearby places from Overpass and link them to each property."""
     pois_stage.run()
+
+
+@app.command()
+def embed() -> None:
+    """Embed each property's description with Ollama."""
+    embed_stage.run()
