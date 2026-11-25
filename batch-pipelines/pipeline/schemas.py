@@ -52,3 +52,11 @@ class GeocodeResult(BaseModel):
     lon: float
     precision: str
     confidence: float
+
+
+class PoiRecord(BaseModel):
+    osm_id: str
+    category: str
+    name: str | None = None
+    lat: float
+    lon: float
