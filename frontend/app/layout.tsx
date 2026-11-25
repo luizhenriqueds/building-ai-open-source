@@ -15,7 +15,7 @@ const atkinsonMono = Atkinson_Hyperlegible_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Semantic Lens Lite",
+  title: "BidRank",
   description: "AI real-estate search demo",
 };
 

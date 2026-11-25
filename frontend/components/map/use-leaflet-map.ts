@@ -19,7 +19,10 @@ export function useLeafletMap(containerRef: RefObject<HTMLDivElement | null>) {
     const cluster = L.markerClusterGroup({ iconCreateFunction: clusterIcon });
     map.addLayer(cluster);
     setView({ map, cluster });
+    const resizeObserver = new ResizeObserver(() => map.invalidateSize());
+    resizeObserver.observe(containerRef.current);
     return () => {
+      resizeObserver.disconnect();
       map.remove();
       setView(null);
     };

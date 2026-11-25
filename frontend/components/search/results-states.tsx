@@ -42,3 +42,14 @@ export function ErrorState({ message }: { message: string }) {
     </div>
   );
 }
+
+export function OutOfViewState() {
+  return (
+    <div className="rounded-xl border border-dashed border-input px-4 py-12 text-center">
+      <h3 className="text-lg font-medium">No properties in this map area</h3>
+      <p className="mt-1.5 text-muted-foreground">
+        Zoom out or move the map to see more.
+      </p>
+    </div>
+  );
+}
