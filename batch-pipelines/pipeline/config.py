@@ -28,3 +28,6 @@ CSV_MIN_COLUMNS = 12
 LAND_TYPES = {"Terreno", "Gleba", "Gleba Urbana"}
 SAMPLE_SIZE = 100
 SAMPLE_SEED = 42
+
+OLLAMA_HOST = os.environ.get("OLLAMA_HOST", "http://localhost:11434")
+EMBED_MODEL = os.environ.get("EMBED_MODEL", "qwen3-embedding:0.6b")

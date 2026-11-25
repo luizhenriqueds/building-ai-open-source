@@ -1,5 +1,6 @@
 from datetime import date
 
+from pgvector.sqlalchemy import HALFVEC
 from sqlalchemy import Computed, Date, Float, ForeignKey, Integer, Numeric, Text
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from sqlalchemy.types import UserDefinedType
@@ -54,6 +55,7 @@ class Property(Base):
         Computed("case when lat is not null then st_makepoint(lon,lat)::geography end"),
         deferred=True,
     )
+    embed_text: Mapped[str | None] = mapped_column(Text)
 
 
 class Poi(Base):
@@ -76,3 +78,10 @@ class PropertyPoi(Base):
     property_id: Mapped[str] = mapped_column(ForeignKey("properties.property_id"), primary_key=True)
     poi_id: Mapped[int] = mapped_column(ForeignKey("pois.id"), primary_key=True)
     dist_m: Mapped[int] = mapped_column(Integer)
+
+
+class PropertyEmbedding(Base):
+    __tablename__ = "property_embeddings"
+
+    property_id: Mapped[str] = mapped_column(ForeignKey("properties.property_id"), primary_key=True)
+    embedding: Mapped[list[float]] = mapped_column(HALFVEC(1024))
