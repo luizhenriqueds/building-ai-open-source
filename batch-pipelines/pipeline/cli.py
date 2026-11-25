@@ -8,6 +8,7 @@ from pipeline import geocode as geocode_stage
 from pipeline import load as load_stage
 from pipeline import pois as pois_stage
 from pipeline import sample as sample_stage
+from pipeline import visual as visual_stage
 
 app = typer.Typer(no_args_is_help=True)
 
@@ -54,3 +55,11 @@ def pois() -> None:
 def embed() -> None:
     """Embed each property's description with Ollama."""
     embed_stage.run()
+
+
+@app.command()
+def visual(
+    limit: int | None = typer.Option(None, help="Score at most this many properties."),
+) -> None:
+    """Score each property photo with a local vision model."""
+    visual_stage.run(limit)

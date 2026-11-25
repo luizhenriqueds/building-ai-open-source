@@ -2,6 +2,7 @@ from datetime import date
 
 from pgvector.sqlalchemy import HALFVEC
 from sqlalchemy import Computed, Date, Float, ForeignKey, Integer, Numeric, Text
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from sqlalchemy.types import UserDefinedType
 
@@ -55,6 +56,10 @@ class Property(Base):
         Computed("case when lat is not null then st_makepoint(lon,lat)::geography end"),
         deferred=True,
     )
+    visual_score: Mapped[float | None] = mapped_column(Float)
+    visual_age: Mapped[str | None] = mapped_column(Text)
+    visual_note: Mapped[str | None] = mapped_column(Text)
+    visual_details: Mapped[dict | None] = mapped_column(JSONB)
     embed_text: Mapped[str | None] = mapped_column(Text)
 
 
