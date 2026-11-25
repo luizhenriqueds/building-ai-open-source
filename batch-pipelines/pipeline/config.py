@@ -32,3 +32,5 @@ SAMPLE_SEED = 42
 OLLAMA_HOST = os.environ.get("OLLAMA_HOST", "http://localhost:11434")
 EMBED_MODEL = os.environ.get("EMBED_MODEL", "qwen3-embedding:0.6b")
 VISUAL_MODEL = os.environ.get("VISUAL_MODEL", "qwen3.5:9b")
+
+API_CORS_ORIGINS = ["http://localhost:3000"]
