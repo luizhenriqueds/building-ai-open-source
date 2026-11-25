@@ -5,6 +5,7 @@ import typer
 from pipeline import crawl as crawl_stage
 from pipeline import geocode as geocode_stage
 from pipeline import load as load_stage
+from pipeline import pois as pois_stage
 from pipeline import sample as sample_stage
 
 app = typer.Typer(no_args_is_help=True)
@@ -40,3 +41,9 @@ def crawl(
 def geocode() -> None:
     """Geocode properties with Nominatim (street, then neighborhood, then city)."""
     geocode_stage.run()
+
+
+@app.command()
+def pois() -> None:
+    """Fetch nearby places from Overpass and link them to each property."""
+    pois_stage.run()

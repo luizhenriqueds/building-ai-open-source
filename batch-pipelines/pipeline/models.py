@@ -1,11 +1,26 @@
 from datetime import date
 
-from sqlalchemy import Date, Float, Integer, Numeric, Text
+from sqlalchemy import Computed, Date, Float, ForeignKey, Integer, Numeric, Text
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+from sqlalchemy.types import UserDefinedType
 
 
 class Base(DeclarativeBase):
     pass
+
+
+class Geography(UserDefinedType):
+    """PostGIS geography(Point, 4326); only used in SQL expressions, never loaded."""
+
+    cache_ok = True
+
+    def get_col_spec(self, **kw: object) -> str:
+        """Return the column type DDL.
+
+        Args:
+            kw: Unused compiler options.
+        """
+        return "geography(Point,4326)"
 
 
 class Property(Base):
@@ -34,3 +49,30 @@ class Property(Base):
     lon: Mapped[float | None] = mapped_column(Float)
     geocode_precision: Mapped[str | None] = mapped_column(Text)
     geocode_confidence: Mapped[float | None] = mapped_column(Float)
+    geom: Mapped[str | None] = mapped_column(
+        Geography,
+        Computed("case when lat is not null then st_makepoint(lon,lat)::geography end"),
+        deferred=True,
+    )
+
+
+class Poi(Base):
+    __tablename__ = "pois"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    osm_id: Mapped[str] = mapped_column(Text, unique=True)
+    category: Mapped[str] = mapped_column(Text)
+    name: Mapped[str | None] = mapped_column(Text)
+    lat: Mapped[float] = mapped_column(Float)
+    lon: Mapped[float] = mapped_column(Float)
+    geom: Mapped[str] = mapped_column(
+        Geography, Computed("st_makepoint(lon,lat)::geography"), deferred=True
+    )
+
+
+class PropertyPoi(Base):
+    __tablename__ = "property_poi"
+
+    property_id: Mapped[str] = mapped_column(ForeignKey("properties.property_id"), primary_key=True)
+    poi_id: Mapped[int] = mapped_column(ForeignKey("pois.id"), primary_key=True)
+    dist_m: Mapped[int] = mapped_column(Integer)
