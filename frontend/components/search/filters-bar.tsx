@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { FilterSelect } from "@/components/search/filter-select";
 import { FilterSlider } from "@/components/search/filter-slider";
 import { Button } from "@/components/ui/button";
@@ -25,6 +26,18 @@ import type { FilterOptions } from "@/lib/types";
 export function FiltersBar() {
   const { filters, update, reset, activeCount } = useSearchFilters();
   const { data: options } = useApiGet<FilterOptions>("/filters");
+  const typeOptions = useMemo(
+    () => buildTypeOptions(options?.types ?? []),
+    [options?.types],
+  );
+  const stateOptions = useMemo(
+    () => buildStateOptions(options?.ufs ?? []),
+    [options?.ufs],
+  );
+  const categoryOptions = useMemo(
+    () => buildCategoryOptions(options?.poi_categories ?? []),
+    [options?.poi_categories],
+  );
   const isDefault = (key: keyof typeof DEFAULT_FILTERS) =>
     filters[key] === DEFAULT_FILTERS[key];
 
@@ -37,14 +50,14 @@ export function FiltersBar() {
       <FilterSelect
         label="Type"
         value={filters.type}
-        options={buildTypeOptions(options?.types ?? [])}
+        options={typeOptions}
         onChange={(type) => update({ type })}
         active={!isDefault("type")}
       />
       <FilterSelect
         label="State"
         value={filters.uf}
-        options={buildStateOptions(options?.ufs ?? [])}
+        options={stateOptions}
         onChange={(uf) => update({ uf })}
         active={!isDefault("uf")}
       />
@@ -78,7 +91,7 @@ export function FiltersBar() {
       <FilterSelect
         label="Near"
         value={filters.poi_cat}
-        options={buildCategoryOptions(options?.poi_categories ?? [])}
+        options={categoryOptions}
         onChange={(poi_cat) => update({ poi_cat })}
         active={!isDefault("poi_cat")}
       />

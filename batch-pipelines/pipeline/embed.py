@@ -69,7 +69,7 @@ def labels_by_property(
 
 
 def build_text(item: Property, size: str | None, segment: str | None) -> str:
-    """Describe a property in Portuguese; missing parts are skipped.
+    """Describe a property in Portuguese, plus its English photo note; missing parts are skipped.
 
     Args:
         item: The property.
@@ -90,6 +90,7 @@ def build_text(item: Property, size: str | None, segment: str | None) -> str:
         f"Localizada no bairro {item.neighborhood} em {location}."
         if item.neighborhood
         else f"Localizada em {location}.",
+        item.visual_score is not None and f"Análise visual da foto: {item.visual_note}",
     ]
     return " ".join(part for part in parts if part)
 

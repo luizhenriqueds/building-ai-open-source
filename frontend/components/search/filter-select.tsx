@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { FilterField } from "@/components/search/filter-field";
 import {
   Select,
@@ -29,10 +30,11 @@ export function FilterSelect({
   active,
   disabled,
 }: Props) {
-  const items = options.map((option) => ({
-    ...option,
-    value: option.value || ANY,
-  }));
+  // Select re-syncs on a new `items` identity, so it must stay stable across renders.
+  const items = useMemo(
+    () => options.map((option) => ({ ...option, value: option.value || ANY })),
+    [options],
+  );
 
   return (
     <FilterField label={label} active={active}>
