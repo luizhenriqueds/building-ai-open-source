@@ -16,6 +16,7 @@
 - Use meaningful, descriptive names. No short or meaningless names (`a1`, `rng`, `p`, `k`).
 - Keep functions short and flat. Split long functions and avoid nested levels.
 - Every function gets a docstring: one summary line plus a brief `Args:` section.
+- Frontend: small single-purpose files (one component per file, logic in `hooks/` and `lib/`). Split any file that grows past about 100 lines.
 
 ## Repo
 - The 100-property stratified sample is committed for reproducibility. Running the pipeline again overwrites it.

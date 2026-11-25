@@ -7,6 +7,7 @@ from sqlalchemy.types import TypeEngine
 
 from api.params import SearchParams
 from api.schemas import PoiOut, PropertyCard
+from pipeline.config import SEARCH_SIMILARITY_MARGIN
 from pipeline.models import Poi, Property
 
 CARD_COLUMNS = (*(name for name in PropertyCard.model_fields if name != "image_url"), "image_file")
@@ -23,6 +24,22 @@ def typed(value: object, sql_type: TypeEngine) -> Any:
         sql_type: SQL type to cast to.
     """
     return cast(literal(value, sql_type), sql_type)
+
+
+def keep_closest(rows: list[dict], margin: float) -> list[dict]:
+    """Keep the rows whose similarity is within a margin of the best one.
+
+    Similarity scores sit in a narrow band, so an absolute cutoff would not work.
+
+    Args:
+        rows: Search results with a similarity score.
+        margin: How far below the best score a row may be.
+    """
+    scored = [row for row in rows if row["similarity"] is not None]
+    if not scored:
+        return rows
+    best = max(row["similarity"] for row in scored)
+    return [row for row in scored if row["similarity"] >= best - margin]
 
 
 def search_properties(
@@ -46,7 +63,8 @@ def search_properties(
         params.poi_radius_m,
         typed(params.bbox_values, BBOX_TYPE),
     ).table_valued(*CARD_COLUMNS)
-    return list(session.execute(select(results)).mappings())
+    rows = list(session.execute(select(results)).mappings())
+    return keep_closest(rows, SEARCH_SIMILARITY_MARGIN) if vector is not None else rows
 
 
 def property_pois(session: Session, property_id: str) -> list[dict]:
