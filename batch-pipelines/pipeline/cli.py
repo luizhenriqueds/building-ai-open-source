@@ -15,7 +15,7 @@ app = typer.Typer(no_args_is_help=True)
 
 @app.callback()
 def main() -> None:
-    """Semantic Lens Lite pipeline."""
+    """BidRank pipeline."""
     logging.basicConfig(level=logging.INFO, format="%(message)s")
 
 
