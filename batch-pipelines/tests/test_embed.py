@@ -37,6 +37,14 @@ def test_build_text_without_neighborhood_or_labels():
     assert build_text(item, None, None) == "Apartamento. Localizada em Niterói-RJ."
 
 
+def test_build_text_appends_the_visual_note_only_for_scored_photos():
+    item = Property(property_id="1", property_type="Casa", uf="SP", city="Campinas")
+    item.visual_note = "Cracked facade."
+    assert "Análise visual" not in build_text(item, None, None)
+    item.visual_score = 40.0
+    assert build_text(item, None, None).endswith("Análise visual da foto: Cracked facade.")
+
+
 def test_query_prompt_has_instruction_and_query():
     prompt = build_query_prompt("house with 3 bedrooms")
     assert prompt.startswith("Instruct: ") and prompt.endswith("Query: house with 3 bedrooms")
