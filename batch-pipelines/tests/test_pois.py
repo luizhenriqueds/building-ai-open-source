@@ -1,4 +1,4 @@
-from pipeline.pois import build_query, category_of, parse_element
+from pipeline.stages.pois.stage import build_query, category_of, parse_element
 
 
 def test_build_query_covers_every_selector_and_kind():

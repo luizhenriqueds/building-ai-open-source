@@ -13,11 +13,14 @@ from crawl4ai import (
 )
 from sqlalchemy import select
 
-from pipeline.config import (
+from pipeline.common.config import (
     CAIXA_REQUEST_HEADERS,
     REQUEST_TIMEOUT_SECONDS,
 )
-from pipeline.crawl_config import (
+from pipeline.common.db import get_session
+from pipeline.common.models import Property
+from pipeline.common.schemas import PageDetails
+from pipeline.stages.crawl.config import (
     ADDRESS_PATTERN,
     ANY_PHOTO_PATTERN,
     AUCTION_DATE_PATTERN,
@@ -38,9 +41,6 @@ from pipeline.crawl_config import (
     PRIVATE_AREA_PATTERN,
     TOTAL_AREA_PATTERN,
 )
-from pipeline.db import get_session
-from pipeline.models import Property
-from pipeline.schemas import PageDetails
 
 logger = logging.getLogger(__name__)
 

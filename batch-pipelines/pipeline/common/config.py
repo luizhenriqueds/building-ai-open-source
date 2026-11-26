@@ -5,11 +5,10 @@ DATABASE_URL = os.environ.get(
     "DATABASE_URL", "postgresql+psycopg://postgres:postgres@127.0.0.1:55322/postgres"
 )
 
-ROOT_DIR = Path(__file__).resolve().parents[1]
+ROOT_DIR = Path(__file__).resolve().parents[2]
 DATA_DIR = ROOT_DIR / "data"
 SAMPLE_PATH = ROOT_DIR / "sample" / "properties.csv"
 
-CAIXA_CSV_URL = "https://venda-imoveis.caixa.gov.br/listaweb/Lista_imoveis_geral.csv"
 CAIXA_REQUEST_HEADERS = {
     "User-Agent": (
         "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
@@ -17,21 +16,12 @@ CAIXA_REQUEST_HEADERS = {
     ),
     "Referer": "https://venda-imoveis.caixa.gov.br/sistema/download-lista.asp",
 }
-CAIXA_DOWNLOAD_PAGE = "https://venda-imoveis.caixa.gov.br/sistema/download-lista.asp"
-DOWNLOADED_FILENAME = "lista_imoveis_geral.csv"
-LOCAL_FILE_PATTERN = "[Ll]ista_imoveis*.csv"
 REQUEST_TIMEOUT_SECONDS = 60
-CSV_DELIMITER = ";"
-CSV_HEADER_MARKER = "N° do imóvel"
-CSV_MIN_COLUMNS = 12
-
-LAND_TYPES = {"Terreno", "Gleba", "Gleba Urbana"}
-SAMPLE_SIZE = 100
-SAMPLE_SEED = 42
-
 OLLAMA_HOST = os.environ.get("OLLAMA_HOST", "http://localhost:11434")
 EMBED_MODEL = os.environ.get("EMBED_MODEL", "qwen3-embedding:0.6b")
 VISUAL_MODEL = os.environ.get("VISUAL_MODEL", "qwen3.5:9b")
 
-API_CORS_ORIGINS = ["http://localhost:3000"]
-SEARCH_SIMILARITY_MARGIN = 0.04
+VISUAL_TEMPERATURE = 0
+VISUAL_SEED = 42
+VISUAL_TIMEOUT_SECONDS = 600
+VISUAL_NUM_CTX = 8192

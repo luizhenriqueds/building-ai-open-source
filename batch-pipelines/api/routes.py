@@ -6,8 +6,8 @@ from api import queries
 from api.deps import SessionDep
 from api.params import SearchParams
 from api.schemas import Filters, PoiOut, PropertyCard, PropertyDetail
-from pipeline.models import Property
-from pipeline.ollama import embed
+from pipeline.common.models import Property
+from pipeline.common.ollama import embed
 from prompts.embedding import build_query_prompt
 
 router = APIRouter()

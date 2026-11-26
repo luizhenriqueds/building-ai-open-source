@@ -1,6 +1,6 @@
 from datetime import date
 
-from pipeline.crawl import is_blocked, parse_page
+from pipeline.stages.crawl.stage import is_blocked, parse_page
 
 MARKDOWN = """Quartos: **2**
 Situação: **Ocupado**

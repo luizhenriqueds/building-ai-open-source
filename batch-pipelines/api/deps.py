@@ -4,7 +4,7 @@ from typing import Annotated
 from fastapi import Depends
 from sqlalchemy.orm import Session
 
-from pipeline.db import get_session
+from pipeline.common.db import get_session
 
 
 def get_db() -> Iterator[Session]:

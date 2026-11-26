@@ -1,5 +1,1 @@
-VISUAL_TEMPERATURE = 0
-VISUAL_SEED = 42
-VISUAL_TIMEOUT_SECONDS = 600
-VISUAL_NUM_CTX = 8192
 SCORE_WEIGHTS = {"facade": 0.40, "condition": 0.35, "standard": 0.10, "surroundings": 0.15}

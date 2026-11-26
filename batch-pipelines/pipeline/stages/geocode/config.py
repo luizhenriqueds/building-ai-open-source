@@ -1,6 +1,6 @@
 import re
 
-from pipeline.config import DATA_DIR
+from pipeline.common.config import DATA_DIR
 
 NOMINATIM_URL = "https://nominatim.openstreetmap.org/search"
 NOMINATIM_PARAMS = {"format": "jsonv2", "countrycodes": "br", "limit": 1}
