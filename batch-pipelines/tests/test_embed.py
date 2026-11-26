@@ -1,6 +1,6 @@
-from pipeline.embed import build_text, label_for, percentile_rank
-from pipeline.embed_config import SEGMENT_CUTS, SEGMENT_LABELS, SIZE_CUTS, SIZE_LABELS
-from pipeline.models import Property
+from pipeline.common.models import Property
+from pipeline.stages.embed.config import SEGMENT_CUTS, SEGMENT_LABELS, SIZE_CUTS, SIZE_LABELS
+from pipeline.stages.embed.stage import build_text, label_for, percentile_rank
 from prompts.embedding import build_query_prompt
 
 

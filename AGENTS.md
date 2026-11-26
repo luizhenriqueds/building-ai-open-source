@@ -11,7 +11,7 @@
 - Follow clean code and best practices for Python, Next.js and React. This is a PoC, so do not overengineer.
 - Comments in English, only when the "why" is not obvious. No header comments at the top of Python files.
 - Keep README and docs as concise as possible.
-- Python: keep constants out of the logic modules. Shared settings live in `pipeline/config.py`; stage-specific constants get their own `pipeline/<stage>_config.py` (e.g. `crawl_config.py`) when they grow.
+- Python: keep constants out of the logic modules. Shared settings live in `pipeline/common/config.py`; stage-specific constants live in `pipeline/stages/<stage>/config.py`.
 - Python: use the `logging` module (`logger = logging.getLogger(__name__)`), never `print`.
 - Use meaningful, descriptive names. No short or meaningless names (`a1`, `rng`, `p`, `k`).
 - Keep functions short and flat. Split long functions and avoid nested levels.

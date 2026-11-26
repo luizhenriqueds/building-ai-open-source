@@ -5,11 +5,11 @@ from pydantic import BaseModel, Field, ValidationError
 from requests import RequestException
 from sqlalchemy import select
 
-from pipeline.crawl_config import IMAGES_DIR
-from pipeline.db import get_session
-from pipeline.models import Property
-from pipeline.ollama import describe_image
-from pipeline.visual_config import SCORE_WEIGHTS
+from pipeline.common.db import get_session
+from pipeline.common.models import Property
+from pipeline.common.ollama import describe_image
+from pipeline.stages.crawl.config import IMAGES_DIR
+from pipeline.stages.visual.config import SCORE_WEIGHTS
 from prompts.visual import INSTRUCT
 
 logger = logging.getLogger(__name__)

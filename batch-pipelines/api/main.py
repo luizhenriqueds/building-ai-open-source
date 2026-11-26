@@ -2,9 +2,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
+from api.config import API_CORS_ORIGINS
 from api.routes import router
-from pipeline.config import API_CORS_ORIGINS
-from pipeline.crawl_config import IMAGES_DIR
+from pipeline.stages.crawl.config import IMAGES_DIR
 
 app = FastAPI(title="Houses Ranking API")
 app.add_middleware(CORSMiddleware, allow_origins=API_CORS_ORIGINS, allow_methods=["GET"])

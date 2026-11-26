@@ -5,10 +5,10 @@ from sqlalchemy import ARRAY, Float, Integer, Numeric, Text, cast, func, literal
 from sqlalchemy.orm import Session
 from sqlalchemy.types import TypeEngine
 
+from api.config import SEARCH_SIMILARITY_MARGIN
 from api.params import SearchParams
 from api.schemas import PoiOut, PropertyCard
-from pipeline.config import SEARCH_SIMILARITY_MARGIN
-from pipeline.models import Poi, Property
+from pipeline.common.models import Poi, Property
 
 CARD_COLUMNS = (*(name for name in PropertyCard.model_fields if name != "image_url"), "image_file")
 POI_COLUMNS = tuple(PoiOut.model_fields)

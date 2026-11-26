@@ -7,9 +7,11 @@ from collections import Counter
 import requests
 from sqlalchemy import select
 
-from pipeline.config import REQUEST_TIMEOUT_SECONDS
-from pipeline.db import get_session
-from pipeline.geocode_config import (
+from pipeline.common.config import REQUEST_TIMEOUT_SECONDS
+from pipeline.common.db import get_session
+from pipeline.common.models import Property
+from pipeline.common.schemas import AddressParts, GeocodeResult
+from pipeline.stages.geocode.config import (
     EARTH_RADIUS_KM,
     GEOCODE_CACHE_PATH,
     MAX_DISTANCE_FROM_CITY_KM,
@@ -21,8 +23,6 @@ from pipeline.geocode_config import (
     PRECISION_CONFIDENCE,
     STREET_NUMBER_PATTERN,
 )
-from pipeline.models import Property
-from pipeline.schemas import AddressParts, GeocodeResult
 
 logger = logging.getLogger(__name__)
 

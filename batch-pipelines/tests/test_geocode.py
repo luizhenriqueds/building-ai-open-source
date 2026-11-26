@@ -1,12 +1,12 @@
-from pipeline.geocode import (
+from pipeline.common.models import Property
+from pipeline.common.schemas import GeocodeResult
+from pipeline.stages.geocode.stage import (
     apply_result,
     build_ladder,
     distance_km,
     geocode_property,
     parse_address,
 )
-from pipeline.models import Property
-from pipeline.schemas import GeocodeResult
 
 CITY_POINT = (-23.55, -46.63)
 

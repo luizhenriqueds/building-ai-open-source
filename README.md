@@ -6,7 +6,7 @@ BidRank: an AI real-estate search demo for CAIXA auction properties, built with 
 
 | Folder | What it is |
 |---|---|
-| `batch-pipelines/pipeline/` | CLI stages: sample, load, crawl, geocode, pois, embed, visual |
+| `batch-pipelines/pipeline/` | CLI (`cli.py`), shared code (`common/`) and one package per stage in `stages/`: sample, load, crawl, geocode, pois, visual, embed |
 | `batch-pipelines/api/` | FastAPI app (`/properties`, `/properties/{id}`, `/filters`) |
 | `batch-pipelines/tests/` | pytest suite |
 | `frontend/` | Next.js app (search page, property detail page, Leaflet maps) |

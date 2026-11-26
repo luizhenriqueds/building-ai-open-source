@@ -1,6 +1,6 @@
 import re
 
-from pipeline.config import DATA_DIR
+from pipeline.common.config import DATA_DIR
 
 IMAGES_DIR = DATA_DIR / "images"
 CAIXA_BASE_URL = "https://venda-imoveis.caixa.gov.br"

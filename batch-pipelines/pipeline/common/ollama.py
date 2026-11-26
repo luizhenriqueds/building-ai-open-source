@@ -3,8 +3,11 @@ import base64
 import numpy as np
 import requests
 
-from pipeline.config import EMBED_MODEL, OLLAMA_HOST, REQUEST_TIMEOUT_SECONDS, VISUAL_MODEL
-from pipeline.visual_config import (
+from pipeline.common.config import (
+    EMBED_MODEL,
+    OLLAMA_HOST,
+    REQUEST_TIMEOUT_SECONDS,
+    VISUAL_MODEL,
     VISUAL_NUM_CTX,
     VISUAL_SEED,
     VISUAL_TEMPERATURE,

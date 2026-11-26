@@ -1,0 +1,2 @@
+API_CORS_ORIGINS = ["http://localhost:3000"]
+SEARCH_SIMILARITY_MARGIN = 0.04

@@ -1,10 +1,10 @@
 import csv
 import logging
 
-from pipeline.config import SAMPLE_PATH
-from pipeline.db import get_session
-from pipeline.models import Property
-from pipeline.schemas import PropertyRecord
+from pipeline.common.config import SAMPLE_PATH
+from pipeline.common.db import get_session
+from pipeline.common.models import Property
+from pipeline.common.schemas import PropertyRecord
 
 logger = logging.getLogger(__name__)
 

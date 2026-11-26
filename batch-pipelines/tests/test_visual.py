@@ -1,5 +1,5 @@
-from pipeline.models import Property
-from pipeline.visual import VisualAge, apply_assessment, compute_score
+from pipeline.common.models import Property
+from pipeline.stages.visual.stage import VisualAge, apply_assessment, compute_score
 
 
 def make_assessment(**overrides) -> VisualAge:

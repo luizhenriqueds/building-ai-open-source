@@ -7,9 +7,10 @@ from sqlalchemy import Integer, delete, func, select
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.orm import Session
 
-from pipeline.db import get_session
-from pipeline.models import Poi, Property, PropertyPoi
-from pipeline.pois_config import (
+from pipeline.common.db import get_session
+from pipeline.common.models import Poi, Property, PropertyPoi
+from pipeline.common.schemas import PoiRecord
+from pipeline.stages.pois.config import (
     AMENITIES,
     CATEGORY_ALIASES,
     OVERPASS_RETRY_PAUSE_SECONDS,
@@ -23,7 +24,6 @@ from pipeline.pois_config import (
     SELECTORS,
     SHOPS,
 )
-from pipeline.schemas import PoiRecord
 
 logger = logging.getLogger(__name__)
 

@@ -1,5 +1,5 @@
-from pipeline.load import read_sample
-from pipeline.schemas import PropertyRecord
+from pipeline.common.schemas import PropertyRecord
+from pipeline.stages.load.stage import read_sample
 
 
 def test_read_sample_returns_typed_records():

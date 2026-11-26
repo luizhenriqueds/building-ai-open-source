@@ -2,13 +2,13 @@ import logging
 
 import typer
 
-from pipeline import crawl as crawl_stage
-from pipeline import embed as embed_stage
-from pipeline import geocode as geocode_stage
-from pipeline import load as load_stage
-from pipeline import pois as pois_stage
-from pipeline import sample as sample_stage
-from pipeline import visual as visual_stage
+from pipeline.stages import crawl as crawl_stage
+from pipeline.stages import embed as embed_stage
+from pipeline.stages import geocode as geocode_stage
+from pipeline.stages import load as load_stage
+from pipeline.stages import pois as pois_stage
+from pipeline.stages import sample as sample_stage
+from pipeline.stages import visual as visual_stage
 
 app = typer.Typer(no_args_is_help=True)
 

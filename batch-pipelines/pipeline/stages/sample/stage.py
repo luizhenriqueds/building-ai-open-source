@@ -7,24 +7,26 @@ from collections import defaultdict
 
 import requests
 
-from pipeline.config import (
-    CAIXA_CSV_URL,
-    CAIXA_DOWNLOAD_PAGE,
+from pipeline.common.config import (
     CAIXA_REQUEST_HEADERS,
-    CSV_DELIMITER,
-    CSV_HEADER_MARKER,
-    CSV_MIN_COLUMNS,
     DATA_DIR,
-    DOWNLOADED_FILENAME,
-    LAND_TYPES,
-    LOCAL_FILE_PATTERN,
     REQUEST_TIMEOUT_SECONDS,
     ROOT_DIR,
     SAMPLE_PATH,
+)
+from pipeline.common.schemas import PropertyRecord
+from pipeline.stages.sample.config import (
+    CAIXA_CSV_URL,
+    CAIXA_DOWNLOAD_PAGE,
+    CSV_DELIMITER,
+    CSV_HEADER_MARKER,
+    CSV_MIN_COLUMNS,
+    DOWNLOADED_FILENAME,
+    LAND_TYPES,
+    LOCAL_FILE_PATTERN,
     SAMPLE_SEED,
     SAMPLE_SIZE,
 )
-from pipeline.schemas import PropertyRecord
 
 logger = logging.getLogger(__name__)
 

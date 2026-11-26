@@ -1,4 +1,4 @@
-from pipeline.config import DATA_DIR
+from pipeline.common.config import DATA_DIR
 
 OVERPASS_URLS = [
     "https://overpass-api.de/api/interpreter",

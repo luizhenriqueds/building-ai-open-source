@@ -1,8 +1,14 @@
 import pytest
 
-from pipeline.config import SAMPLE_SIZE
-from pipeline.sample import allocate, draw_sample, group_by_stratum, parse_listing, to_property
-from pipeline.schemas import PropertyRecord
+from pipeline.common.schemas import PropertyRecord
+from pipeline.stages.sample.config import SAMPLE_SIZE
+from pipeline.stages.sample.stage import (
+    allocate,
+    draw_sample,
+    group_by_stratum,
+    parse_listing,
+    to_property,
+)
 
 HOUSE_DESCRIPTION = (
     "Casa, 111.70 de área total, 100.00 de área privativa, 300.00 de área do terreno,  "

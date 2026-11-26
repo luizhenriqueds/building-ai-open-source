@@ -6,16 +6,16 @@ from sqlalchemy import select
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.orm import Session
 
-from pipeline.db import get_session
-from pipeline.embed_config import (
+from pipeline.common.db import get_session
+from pipeline.common.models import Property, PropertyEmbedding
+from pipeline.common.ollama import embed
+from pipeline.stages.embed.config import (
     EMBED_BATCH_SIZE,
     SEGMENT_CUTS,
     SEGMENT_LABELS,
     SIZE_CUTS,
     SIZE_LABELS,
 )
-from pipeline.models import Property, PropertyEmbedding
-from pipeline.ollama import embed
 
 logger = logging.getLogger(__name__)
 
