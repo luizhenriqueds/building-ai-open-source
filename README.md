@@ -14,6 +14,35 @@ BidRank: an AI real-estate search demo for CAIXA auction properties, built with 
 
 Stack: Supabase (local Postgres), Ollama (`qwen3-embedding:0.6b` for embeddings, `qwen3.5:9b` for photo scoring), Nominatim (geocoding), Overpass (nearby places), Crawl4AI.
 
+## Architecture
+
+```mermaid
+flowchart LR
+    subgraph Batch["Batch pipeline"]
+        PIPE[sample, load, crawl,<br/>geocode, pois, visual, embed]
+    end
+    subgraph Ext["External services"]
+        CAIXA[CAIXA site]
+        NOM[Nominatim]
+        OVP[Overpass]
+    end
+    OLL[Ollama<br/>embeddings + vision]
+    DB[(Supabase Postgres<br/>pgvector + PostGIS)]
+    API[FastAPI]
+    UI[Next.js + Leaflet]
+
+    CAIXA --> PIPE
+    NOM --> PIPE
+    OVP --> PIPE
+    PIPE <--> OLL
+    PIPE --> DB
+    DB <--> API
+    API <--> OLL
+    UI <-->|JSON| API
+```
+
+The pipeline fills Postgres once; at query time the API embeds the search text with Ollama and runs one SQL function that combines vector similarity, filters and distance to nearby places.
+
 ## Setup
 
 Requires Docker, [uv](https://docs.astral.sh/uv/), Node 22 and [Ollama](https://ollama.com).
